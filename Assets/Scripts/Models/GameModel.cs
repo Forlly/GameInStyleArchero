@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ public class GameModel
     public int TickTime;
     public Vector3 SpawnPositionCharacter;
     public Joystick Joystick;
+    
+    public Action<Vector2> CharacterMoveEvent;
     
     private bool _onSimulation;
     
@@ -29,7 +32,7 @@ public class GameModel
         {
             if (Joystick.Horizontal != 0)
             {
-                Debug.Log(Joystick.Horizontal);
+                CharacterMoveEvent?.Invoke(Joystick.Direction);
             }
             
             await Task.Delay(msec);
