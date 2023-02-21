@@ -13,8 +13,6 @@ public class EnemyMoveable : MoveableBase
         _maxX = SpawnPoint.x + Distance.x;
         _minZ = SpawnPoint.z - Distance.y;
         _maxZ = SpawnPoint.z + Distance.y;
-        Debug.Log("POSITIONS" + _maxX+_maxZ+_minX+_minZ);
-        Debug.Log("Dis" + Distance);
     }
 
     public override Vector3 Move(Vector3 direction)
@@ -38,7 +36,6 @@ public class EnemyMoveable : MoveableBase
         if (direction.z > _maxZ)
         {
             targetPos.z = _maxZ;
-            Debug.Log("TargetPOSITION" + targetPos);
         }
         else if (direction.z < _minZ)
         {
@@ -49,8 +46,6 @@ public class EnemyMoveable : MoveableBase
             targetPos.z = direction.z;
         }
         
-        Debug.Log("SPAWNPOS" + SpawnPoint);
-        Debug.Log("TargetPOSITION" + targetPos);
         return targetPos;
     }
 }

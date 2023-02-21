@@ -5,6 +5,7 @@ public class ViewManager : MonoBehaviour
 {
     public Transform SpawnPositionCharacter;
     
+    [SerializeField] private Collider _field;
     [SerializeField] private CharacterController _character;
     [SerializeField] private EnemyController _enemy;
 
@@ -15,5 +16,10 @@ public class ViewManager : MonoBehaviour
         _enemy.Init(gameModel);
         Debug.Log("ViewManager starting");
 
+    }
+
+    public Bounds GetSpawnFieldBounds()
+    {
+        return _field.bounds;
     }
 }

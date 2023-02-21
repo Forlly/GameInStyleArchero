@@ -8,7 +8,7 @@ public class EnemyController : UnitBase
     [SerializeField] private Image _totalHealthImg;
     [SerializeField] private Image _currentHealthImg;
     
-    private EnemyMoveable _enemyMoveable = new EnemyMoveable();
+    public EnemyMoveable EnemyMoveable = new EnemyMoveable();
     private CharacterSkillable _characterSkillable = new CharacterSkillable();
     private CharacterAttackable _characterAttackable = new CharacterAttackable();
     
@@ -32,10 +32,10 @@ public class EnemyController : UnitBase
         _attackDamage = 5;
         _agent.speed = _speedMove;
         
-        _enemyMoveable.MoveSpeed = _speedMove;
-        _enemyMoveable.SpawnPoint = transform.position;
-        _enemyMoveable.Distance = _distanceMoving;
-        _enemyMoveable.SetExtremePoints();
+        EnemyMoveable.MoveSpeed = _speedMove;
+        EnemyMoveable.SpawnPoint = transform.position;
+        EnemyMoveable.Distance = _distanceMoving;
+        EnemyMoveable.SetExtremePoints();
         
         gameModel.EnemyMoveEvent += TryMove;
     }
@@ -58,7 +58,7 @@ public class EnemyController : UnitBase
     
     public override Vector3 Move(Vector3 direction)
     {
-      return _enemyMoveable.Move(direction);
+      return EnemyMoveable.Move(direction);
     }
     
     public override void Attack()
