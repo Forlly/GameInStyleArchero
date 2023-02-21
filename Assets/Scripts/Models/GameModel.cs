@@ -8,7 +8,9 @@ public class GameModel
     public Vector3 SpawnPositionCharacter;
     public Joystick Joystick;
     
-    public Action<Vector2> CharacterMoveEvent;
+    public Action<Vector3> CharacterMoveEvent;
+    public Action<int> EnemyMoveEvent;
+    public Action StartAttackEvent;
     
     private bool _onSimulation;
     
@@ -34,6 +36,12 @@ public class GameModel
             {
                 CharacterMoveEvent?.Invoke(Joystick.Direction);
             }
+            else
+            {
+                StartAttackEvent?.Invoke();
+            }
+            
+            EnemyMoveEvent?.Invoke(msec);
             
             await Task.Delay(msec);
         }

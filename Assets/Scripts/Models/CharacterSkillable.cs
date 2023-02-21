@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CharacterSkill : CharacterSkillBase
+public class CharacterSkillable : SkillableBase
 {
 
     public override void UseSkill()

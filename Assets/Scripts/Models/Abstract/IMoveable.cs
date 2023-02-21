@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IMoveable
 {
-    public Vector2 Move(Vector2 direction);
+    public Vector3 Move(Vector3 direction);
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class CharacterBase : MonoBehaviour, IMoveable, IAttackable, ISkillable
+public abstract class UnitBase : MonoBehaviour, IMoveable, IAttackable, ISkillable
 {
     public abstract Vector3 Move(Vector3 direction);
 
