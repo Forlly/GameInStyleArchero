@@ -1,13 +1,16 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class ViewManager : MonoBehaviour
 {
     public Transform SpawnPositionCharacter;
     
+    [SerializeField] private Text _countOfCoinTxt;
     [SerializeField] private Collider _field;
     [SerializeField] private CharacterController _characterPrefab;
     private CharacterController _character;
+    private int _countOfCoin;
     
     private GameModel _gameModel;
 
@@ -16,11 +19,12 @@ public class ViewManager : MonoBehaviour
     {
         _gameModel = gameModel;
         _gameModel.SpawnCharacterEvent += SpawnCharacter;
+        _gameModel.DieUnitEvent += IncreaseCountOfCoin;
+        _countOfCoin = 0;
        
         SetOrthographicSizeCamera();
         
         Debug.Log("ViewManager starting");
-
     }
 
     private void SetOrthographicSizeCamera()
@@ -36,9 +40,6 @@ public class ViewManager : MonoBehaviour
             _camera.orthographicSize =
                 (_field.bounds.size.z + 1) * _camera.pixelWidth / _camera.pixelHeight * 0.5f;
         }
-        
-        
-
     }
 
     public Bounds GetSpawnFieldBounds()
@@ -54,4 +55,11 @@ public class ViewManager : MonoBehaviour
         character.Init(_gameModel);
         _character = character;
     }
+
+    private void IncreaseCountOfCoin()
+    {
+        _countOfCoin += 10;
+        _countOfCoinTxt.text = _countOfCoin.ToString();
+    }
+        
 }

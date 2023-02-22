@@ -13,6 +13,7 @@ public class GameModel
     public Action<int> EnemyMoveEvent;
     public Action<List<EnemyController>, int> StartAttackUnitEvent;
     public Action SpawnCharacterEvent;
+    public Action DieUnitEvent;
     
     private bool _onSimulation;
     private int _countOfEnemiesGround;
@@ -102,7 +103,7 @@ public class GameModel
                 _enemies.Remove(_enemies[i]);
             }
         }
-        Debug.Log(_enemies);
+        DieUnitEvent?.Invoke();
     }
     
     public void EndModel()
