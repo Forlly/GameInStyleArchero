@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1424948478402096364}
   - component: {fileID: 4207621721397868726}
   - component: {fileID: 377534714099059989}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: healthBarCurrent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 1562139090409284094}
   - component: {fileID: 7303368950028452326}
   - component: {fileID: 103397524321784130}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: healthBarTotal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,9 +163,9 @@ GameObject:
   - component: {fileID: 5272613124552664020}
   - component: {fileID: 867435278098709400}
   - component: {fileID: 886041228799413543}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EnemyGround
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -240,9 +240,9 @@ GameObject:
   - component: {fileID: 5272613125929832053}
   - component: {fileID: 5272613125929832052}
   - component: {fileID: 2854498384740270304}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -353,7 +353,7 @@ GameObject:
   - component: {fileID: 7470858639153325345}
   - component: {fileID: 5789459509694459832}
   - component: {fileID: 391333094375422849}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}

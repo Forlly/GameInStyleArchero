@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class BulletsPool : MonoBehaviour
 {
+    public static BulletsPool Instance;
     private List<GameObject> poolObjects = new List<GameObject>();
     [SerializeField] private int amountPool = 128;
     [SerializeField] private GameObject bullet;
@@ -11,6 +12,11 @@ public class BulletsPool : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        
         for (int i = 0; i < amountPool; i++)
         {
             GameObject tmpObj = Instantiate(bullet);

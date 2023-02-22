@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class ViewManager : MonoBehaviour
 {
     public Transform SpawnPositionCharacter;
-    
+
     [SerializeField] private Text _countOfCoinTxt;
     [SerializeField] private Collider _field;
     [SerializeField] private CharacterController _characterPrefab;

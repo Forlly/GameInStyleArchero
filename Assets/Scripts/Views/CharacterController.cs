@@ -11,10 +11,14 @@ public class CharacterController : CharacterBase
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private Image _totalHealthImg;
     [SerializeField] private Image _currentHealthImg;
+
+    public Weapon _weapon;
+    [SerializeField] private GameObject _bullet;
+    [SerializeField] private Transform _spawnBulletPos;
     
     private CharacterMoveable _characterMoveable = new CharacterMoveable();
     private CharacterSkillable _characterSkillable = new CharacterSkillable();
-    private CharacterAttackable _characterAttackable = new CharacterAttackable();
+    [SerializeField] private CharacterAttackable _characterAttackable;
     private int _attackDelay;
     private int _currentAttackDelay = 0;
     private int _startHealth;
@@ -31,8 +35,9 @@ public class CharacterController : CharacterBase
         _currentAttackDelay = 0;
         _startHealth = 10;
         _currentHealth = 10;
-        _characterAttackable.AttackDamage = 5;
         
+        _characterAttackable.SetParameters(_weapon.Damage, _weapon, _bullet, _spawnBulletPos);
+
         gameModel.CharacterMoveEvent += TryMove;
         gameModel.StartAttackUnitEvent += TryAttack;
     }
@@ -74,8 +79,9 @@ public class CharacterController : CharacterBase
                     targetEnemy = enemy;
                 }
             }
-            _characterAttackable.Attack(targetEnemy);
             
+            _rigidbody.transform.LookAt(new Vector3(targetEnemy.transform.position.x,  _rigidbody.transform.position.y,targetEnemy.transform.position.z));
+            _characterAttackable.Attack(targetEnemy);
 
         }
     }
