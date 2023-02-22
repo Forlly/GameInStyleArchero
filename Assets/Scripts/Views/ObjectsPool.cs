@@ -10,7 +10,7 @@ public class ObjectsPool : MonoBehaviour
     
     private bool isFull = false;
 
-    private void Awake()
+    public void Init()
     {
         for (int i = 0; i < amountPool; i++)
         {

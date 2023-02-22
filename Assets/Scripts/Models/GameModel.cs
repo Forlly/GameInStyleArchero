@@ -7,12 +7,12 @@ using Random = UnityEngine.Random;
 public class GameModel
 {
     public int TickTime;
-    public Vector3 SpawnPositionCharacter;
     public Joystick Joystick;
     
     public Action<Vector3> CharacterMoveEvent;
     public Action<int> EnemyMoveEvent;
     public Action StartAttackEvent;
+    public Action SpawnCharacterEvent;
     
     private bool _onSimulation;
     private int _countOfEnemies;
@@ -46,6 +46,8 @@ public class GameModel
             enemy.Init(this);
             _enemies.Add(enemy);
         }
+        
+        SpawnCharacterEvent?.Invoke();
     }
     
     public async void StartSimulation()
