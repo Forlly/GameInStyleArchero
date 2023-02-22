@@ -1,17 +1,19 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class EnemyController : UnitBase
 {
+    public EnemyMoveable EnemyMoveable = new EnemyMoveable();
+    public Action<EnemyController> DieUnitEvent;
     public EnemyType EnemyType;
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private Image _totalHealthImg;
     [SerializeField] private Image _currentHealthImg;
-
-    public EnemyMoveable EnemyMoveable = new EnemyMoveable();
+    
     private CharacterSkillable _characterSkillable = new CharacterSkillable();
-    private CharacterAttackable _characterAttackable = new CharacterAttackable();
+    private EnemyAttackable _enemyAttackable = new EnemyAttackable();
     
     [SerializeField] private float _speedMove;
     [SerializeField] private Vector2 _distanceMoving;
@@ -22,6 +24,8 @@ public class EnemyController : UnitBase
     private int _currentHealth;
     private int _attackDelay;
     private int _attackDamage;
+
+    private GameModel _gameModel;
 
     public void Init(GameModel gameModel)
     {
@@ -37,8 +41,8 @@ public class EnemyController : UnitBase
         EnemyMoveable.SpawnPoint = transform.position;
         EnemyMoveable.Distance = _distanceMoving;
         EnemyMoveable.SetExtremePoints();
-
-        gameModel.EnemyMoveEvent += TryMove;
+        _gameModel = gameModel;
+        _gameModel.EnemyMoveEvent += TryMove;
     }
 
     public void TryMove(int msec)
@@ -58,14 +62,34 @@ public class EnemyController : UnitBase
       return EnemyMoveable.Move(direction);
     }
     
-    public override void Attack()
+    public override void Attack(CharacterController target)
     {
-        _characterAttackable.Attack();
+        _enemyAttackable.Attack(target);
     }
 
     public override void UseSkill()
     {
         _characterSkillable.UseSkill();
+    }
+
+    public void StopMoving()
+    {
+        _agent.velocity = Vector3.zero;
+        _agent.Stop();
+        _gameModel.EnemyMoveEvent -= TryMove;
+    }
+    public void ReceiveDamage(int damage)
+    {
+        _currentHealth -= damage;
+        UpdateHealthView(_currentHealth, _startHealth);
+
+        if (_currentHealth <= 0)
+        {
+            Debug.Log("DIE");
+            DieUnitEvent?.Invoke(this);
+            
+        }
+        
     }
     
     public void UpdateHealthView(int currentHP, int totalHP)

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +19,7 @@ public class CharacterController : CharacterBase
     private int _currentAttackDelay = 0;
     private int _startHealth;
     private int _currentHealth;
-    private int _attackDamage;
+    
     
     public void Init(GameModel gameModel)
     {
@@ -29,11 +31,10 @@ public class CharacterController : CharacterBase
         _currentAttackDelay = 0;
         _startHealth = 10;
         _currentHealth = 10;
-        _attackDamage = 5;
+        _characterAttackable.AttackDamage = 5;
         
         gameModel.CharacterMoveEvent += TryMove;
-        gameModel.StartAttackEvent += StopMoving;
-        gameModel.StartAttackEvent += Attack;
+        gameModel.StartAttackUnitEvent += TryAttack;
     }
 
     public void TryMove(Vector3 direction)
@@ -51,10 +52,39 @@ public class CharacterController : CharacterBase
         _rigidbody.velocity = Vector3.zero;
     }
 
-    public override void Attack()
+    private void TryAttack(List<EnemyController> enemies, int msec)
     {
-        _characterAttackable.Attack();
+        StopMoving();
+        
+        if (enemies.Count <= 0) return;
+        
+        _currentAttackDelay += msec;
+        if (_currentAttackDelay >= _attackDelay)
+        {
+            _currentAttackDelay -= _attackDelay;
+
+            float minDistance = 1000f;
+
+            EnemyController targetEnemy = enemies[0];
+            foreach (EnemyController enemy in enemies)
+            {
+                if (minDistance > Vector3.Distance(enemy.transform.position, this.transform.position))
+                {
+                    minDistance = Vector3.Distance(enemy.transform.position, this.transform.position);
+                    targetEnemy = enemy;
+                }
+            }
+            _characterAttackable.Attack(targetEnemy);
+            
+
+        }
     }
+
+    public override void Attack(EnemyController targetEnemy)
+    {
+        _characterAttackable.Attack(targetEnemy);
+    }
+
 
     public override void UseSkill()
     {

@@ -11,7 +11,7 @@ public class GameModel
     
     public Action<Vector3> CharacterMoveEvent;
     public Action<int> EnemyMoveEvent;
-    public Action StartAttackEvent;
+    public Action<List<EnemyController>, int> StartAttackUnitEvent;
     public Action SpawnCharacterEvent;
     
     private bool _onSimulation;
@@ -47,6 +47,7 @@ public class GameModel
             enemyGround.transform.position = new Vector3(Random.Range(maxX, minX), 0.25f, Random.Range(maxZ, minZ));
             enemyGround.EnemyMoveable.SpawnPoint = enemyGround.transform.position;
             enemyGround.Init(this);
+            enemyGround.DieUnitEvent += ReturnToPoolUnit;
             _enemies.Add(enemyGround);
         }
         for (int i = 0; i < _countOfEnemiesFlying; i++)
@@ -56,6 +57,7 @@ public class GameModel
             enemyFlying.transform.position = new Vector3(Random.Range(maxX, minX), 0.25f, Random.Range(maxZ, minZ));
             enemyFlying.EnemyMoveable.SpawnPoint = enemyFlying.transform.position;
             enemyFlying.Init(this);
+            enemyFlying.DieUnitEvent += ReturnToPoolUnit;
             _enemies.Add(enemyFlying);
         }
         
@@ -78,7 +80,7 @@ public class GameModel
             }
             else
             {
-                StartAttackEvent?.Invoke();
+                StartAttackUnitEvent?.Invoke(_enemies, msec);
             }
             
             EnemyMoveEvent?.Invoke(msec);
@@ -89,6 +91,20 @@ public class GameModel
         EndModel();
     }
 
+    private void ReturnToPoolUnit(EnemyController unit)
+    {
+        for (int i = 0; i < _enemies.Count; i++)
+        {
+            if (_enemies[i] == unit)
+            {
+                _enemies[i].StopMoving();
+                _objectsPool.TurnOfObject(_enemies[i]);
+                _enemies.Remove(_enemies[i]);
+            }
+        }
+        Debug.Log(_enemies);
+    }
+    
     public void EndModel()
     {
         _onSimulation = false;

@@ -1,9 +1,15 @@
 
 
-public class CharacterAttackable : AttackableBase
+using UnityEngine;
+
+public class CharacterAttackable : AttackableCharacterBase
 {
-    public override void Attack()
+    
+    public int AttackDamage;
+    public override void Attack(EnemyController targetEnemy)
     {
-        //Debug.Log("Attack");
+        targetEnemy.ReceiveDamage(AttackDamage);
+        Debug.Log("Attack");
     }
+    
 }
