@@ -15,14 +15,16 @@ public class GameModel
     public Action SpawnCharacterEvent;
     
     private bool _onSimulation;
-    private int _countOfEnemies;
+    private int _countOfEnemiesGround;
+    private int _countOfEnemiesFlying;
     private ObjectsPool _objectsPool;
     private List<EnemyController> _enemies = new List<EnemyController>();
 
     public void Init(Joystick joystick, ObjectsPool objectsPool)
     {
         TickTime = 10;
-        _countOfEnemies = 3;
+        _countOfEnemiesGround = 3;
+        _countOfEnemiesFlying = 1;
         _objectsPool = objectsPool;
 
         Joystick = joystick;
@@ -38,13 +40,23 @@ public class GameModel
     private void SpawnEnemies(float minX, float maxX, float minZ, float maxZ)
     {
         Debug.Log("SPAWN");
-        for (int i = 0; i < _countOfEnemies; i++)
+        for (int i = 0; i < _countOfEnemiesGround; i++)
         {
-            EnemyController enemy = _objectsPool.GetPooledObject();
-            enemy.transform.position = new Vector3(Random.Range(maxX, minX), 0.25f, Random.Range(maxZ, minZ));
-            enemy.EnemyMoveable.SpawnPoint = enemy.transform.position;
-            enemy.Init(this);
-            _enemies.Add(enemy);
+            Debug.Log(_countOfEnemiesGround);
+            EnemyController enemyGround = _objectsPool.GetPooledObject(EnemyType.Ground);
+            enemyGround.transform.position = new Vector3(Random.Range(maxX, minX), 0.25f, Random.Range(maxZ, minZ));
+            enemyGround.EnemyMoveable.SpawnPoint = enemyGround.transform.position;
+            enemyGround.Init(this);
+            _enemies.Add(enemyGround);
+        }
+        for (int i = 0; i < _countOfEnemiesFlying; i++)
+        {
+            Debug.Log(_countOfEnemiesFlying);
+            EnemyController enemyFlying = _objectsPool.GetPooledObject(EnemyType.Flying);
+            enemyFlying.transform.position = new Vector3(Random.Range(maxX, minX), 0.25f, Random.Range(maxZ, minZ));
+            enemyFlying.EnemyMoveable.SpawnPoint = enemyFlying.transform.position;
+            enemyFlying.Init(this);
+            _enemies.Add(enemyFlying);
         }
         
         SpawnCharacterEvent?.Invoke();

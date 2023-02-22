@@ -15,8 +15,7 @@ public class GlobalManager : MonoBehaviour
         _viewManager.Init(_gameModel);
         _gameModel.Init(_joystick, _objectsPool);
         _objectsPool.Init();
-
-        Debug.Log(_viewManager.GetSpawnFieldBounds());
+        
         _gameModel.SetSpawnFieldBorders(_viewManager.GetSpawnFieldBounds());
         _gameModel.StartSimulation();
     }

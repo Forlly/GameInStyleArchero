@@ -18,8 +18,7 @@ public class EnemyMoveable : MoveableBase
     public override Vector3 Move(Vector3 direction)
     {
         Vector3 targetPos = Vector3.zero;
-        targetPos.y = SpawnPoint.y;
-        
+
         if (direction.x > _maxX)
         {
             targetPos.x = _maxX;
@@ -45,7 +44,7 @@ public class EnemyMoveable : MoveableBase
         {
             targetPos.z = direction.z;
         }
-        
+        targetPos.y = SpawnPoint.y;
         return targetPos;
     }
 }

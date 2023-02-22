@@ -4,10 +4,11 @@ using UnityEngine.UI;
 
 public class EnemyController : UnitBase
 {
+    public EnemyType EnemyType;
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private Image _totalHealthImg;
     [SerializeField] private Image _currentHealthImg;
-    
+
     public EnemyMoveable EnemyMoveable = new EnemyMoveable();
     private CharacterSkillable _characterSkillable = new CharacterSkillable();
     private CharacterAttackable _characterAttackable = new CharacterAttackable();
@@ -36,7 +37,7 @@ public class EnemyController : UnitBase
         EnemyMoveable.SpawnPoint = transform.position;
         EnemyMoveable.Distance = _distanceMoving;
         EnemyMoveable.SetExtremePoints();
-        
+
         gameModel.EnemyMoveEvent += TryMove;
     }
 
@@ -48,10 +49,6 @@ public class EnemyController : UnitBase
         
        
         _currentImmobilityTime -= _immobilityTime;
-        Debug.Log(_currentImmobilityTime);
-        Debug.Log("Move Enemy");
-        Debug.Log(Move(CharacterController.Instance.transform.position));
-        Debug.Log(_agent.SetDestination(Move(CharacterController.Instance.transform.position)));
         _agent.SetDestination(Move(CharacterController.Instance.transform.position));
 
     }
@@ -82,4 +79,10 @@ public class EnemyController : UnitBase
         _currentHealthImg.fillAmount = percentCurrentHp/100f;
         
     }
+}
+
+public enum EnemyType
+{
+    Ground,
+    Flying
 }
