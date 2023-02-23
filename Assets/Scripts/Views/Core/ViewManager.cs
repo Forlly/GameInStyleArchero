@@ -1,12 +1,13 @@
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class ViewManager : MonoBehaviour
 {
     public Transform SpawnPositionCharacter;
-
+    
     [SerializeField] private Text _countOfCoinTxt;
+    [SerializeField] private Button _pauseButton;
+    [SerializeField] private PausePanel _pausePanel;
     [SerializeField] private Collider _field;
     [SerializeField] private CharacterController prefab;
     [SerializeField] private GameObject _gameOverPanel;
@@ -23,10 +24,18 @@ public class ViewManager : MonoBehaviour
         _gameModel.SpawnCharacterEvent += SpawnCharacter;
         _gameModel.DieUnitEvent += IncreaseCountOfCoin;
         _countOfCoin = 0;
-       
+
+        _pauseButton.onClick.AddListener(PauseGame);
         SetOrthographicSizeCamera();
         
         Debug.Log("ViewManager starting");
+    }
+
+    private void PauseGame()
+    {
+        Time.timeScale = 0;
+        _pauseButton.gameObject.SetActive(false);
+        _pausePanel.gameObject.SetActive(true);
     }
 
     private void SetOrthographicSizeCamera()

@@ -30,8 +30,8 @@ public class EnemyController : UnitBase
 
     public void Init(GameModel gameModel)
     {
-        _immobilityTime = 3500f;
-        _currentImmobilityTime = 3500f;
+        _immobilityTime = 2500;
+        _currentImmobilityTime = 0f;
         _startHealth = 20;
         _currentHealth = _startHealth;
         _attackDelay = 1000;
@@ -48,7 +48,11 @@ public class EnemyController : UnitBase
 
     public void TryMove(int msec)
     {
-        if (_agent.velocity != Vector3.zero) return;
+        if (_agent.velocity != Vector3.zero)
+        {
+            gameObject.transform.rotation = Quaternion.LookRotation(_agent.velocity);
+            return;
+        }
         
         _currentImmobilityTime += msec;
         if (!(_currentImmobilityTime >= _immobilityTime)) return;
@@ -56,13 +60,11 @@ public class EnemyController : UnitBase
        
         _currentImmobilityTime -= _immobilityTime;
         _agent.SetDestination(Move(CharacterController.Instance.transform.position));
-
     }
     
     public override Vector3 Move(Vector3 direction)
     {
-        Debug.Log("MOVE ENEMY");
-      return EnemyMoveable.Move(direction);
+        return EnemyMoveable.Move(direction);
     }
 
     public void TryAttack(int msec)
@@ -73,7 +75,6 @@ public class EnemyController : UnitBase
             if (_currentAttackDelay >= _attackDelay)
             {
                 _currentAttackDelay -= _attackDelay;
-                Debug.Log("ATTACK ENEMY" + gameObject.name);
                 gameObject.transform.LookAt(CharacterController.Instance.transform);
                 Attack(CharacterController.Instance.transform.position);
             }
@@ -106,6 +107,8 @@ public class EnemyController : UnitBase
         _agent.velocity = Vector3.zero;
         _agent.isStopped = true;
         _gameModel.EnemyMoveEvent -= TryMove;
+        
+        _enemyAttackable.StopAttack();
         _gameModel.EnemyAttackEvent -= TryAttack;
     }
     public void ReceiveDamage(int damage)

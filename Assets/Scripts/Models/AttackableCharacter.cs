@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackableCharacter : AttackableBase
@@ -8,6 +9,9 @@ public class AttackableCharacter : AttackableBase
     public Weapon Weapon;
     public Transform SpawnBulletPos;
     public float LifeTime;
+
+    private Coroutine _attackCoroutine;
+    private List<GameObject> _bullets = new List<GameObject>();
     public override void Attack(Vector3 targetEnemy)
     {
         Fire(targetEnemy);
@@ -21,7 +25,16 @@ public class AttackableCharacter : AttackableBase
     }
     public void Fire(Vector3 targetPosition)
     {
-        StartCoroutine(Shot(targetPosition));
+        _attackCoroutine = StartCoroutine(Shot(targetPosition));
+    }
+
+    public void StopAttack()
+    {
+        StopCoroutine(_attackCoroutine);
+        for (int i = 0; i < _bullets.Count; i++)
+        {
+            BulletsPool.Instance.TurnOfObject(_bullets[i]);
+        }
     }
 
     private IEnumerator Shot(Vector3 targetPosition)
@@ -29,6 +42,8 @@ public class AttackableCharacter : AttackableBase
         Vector3 startPoint = SpawnBulletPos.position;
 
         GameObject _bullet = BulletsPool.Instance.GetPooledObject();
+        _bullets.Add(BulletsPool.Instance.GetPooledObject());
+        
         if (_bullet != null)
         {
             _bullet.transform.position = startPoint;
@@ -58,6 +73,7 @@ public class AttackableCharacter : AttackableBase
             if (currentTime >= LifeTime || progressFly > 1)
             {
                 BulletsPool.Instance.TurnOfObject(_bullet);
+                _bullets.Remove(_bullet);
                 yield break;
             }
         }

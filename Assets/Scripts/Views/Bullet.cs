@@ -17,7 +17,8 @@ public class Bullet : MonoBehaviour
         }
         else
         {
-            BulletsPool.Instance.TurnOfObject(gameObject);
+            if (!collision.gameObject.CompareTag("Bullet"))
+                BulletsPool.Instance.TurnOfObject(gameObject);
         }
     }
 }

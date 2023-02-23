@@ -223,7 +223,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttackDamage: 20
   Weapon: {fileID: 11400000, guid: a0d5d841f0838db4ea41fe44f5272301, type: 2}
-  Bullet: {fileID: 2686928704386747324, guid: f88c44816322aea4b890c7239b8e7c53, type: 3}
   SpawnBulletPos: {fileID: 6716061215082320838}
   LifeTime: 0
 --- !u!195 &886041228799413543
@@ -487,7 +486,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6481983901910953327}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.718}
+  m_LocalPosition: {x: 0, y: 0, z: 0.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
