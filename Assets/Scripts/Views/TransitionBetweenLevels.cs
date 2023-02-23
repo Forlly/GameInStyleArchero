@@ -7,7 +7,6 @@ public class TransitionBetweenLevels : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision);
         if (_transitionIsOpen)
         {
             SceneManager.LoadScene("SampleScene");

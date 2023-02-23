@@ -32,16 +32,13 @@ public class ViewManager : MonoBehaviour
         _pauseButton.onClick.AddListener(PauseGame);
         _pausePanel.SetGameModel(gameModel);
         SetOrthographicSizeCamera();
-        
-        Debug.Log("ViewManager starting");
     }
 
     private void PauseGame()
     {
-        Time.timeScale = 0;
         _gameModel.EndModel();
+        _pausePanel.PausedGame();
         _pauseButton.gameObject.SetActive(false);
-        _pausePanel.gameObject.SetActive(true);
     }
 
     private void OpenTransitionBetweenLevels()

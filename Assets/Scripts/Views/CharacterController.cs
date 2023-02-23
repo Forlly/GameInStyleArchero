@@ -19,7 +19,7 @@ public class CharacterController : CharacterBase
     
     private CharacterMoveable _characterMoveable = new CharacterMoveable();
     private CharacterSkillable _characterSkillable = new CharacterSkillable();
-    [SerializeField] private AttackableCharacter attackableCharacter;
+    [SerializeField] private AttackableUnit attackableCharacter;
     private int _currentAttackDelay;
     private int _startHealth;
     private int _currentHealth;

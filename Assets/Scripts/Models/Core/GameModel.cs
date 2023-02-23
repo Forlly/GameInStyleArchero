@@ -27,13 +27,12 @@ public class GameModel
     public void Init(Joystick joystick, ObjectsPool objectsPool)
     {
         TickTime = 10;
-        _countOfEnemiesGround = 1;
-        _countOfEnemiesFlying = 1;
+        _countOfEnemiesGround = 2;
+        _countOfEnemiesFlying = 2;
         _objectsPool = objectsPool;
         _allEnemiesIsKilled = false;
 
         Joystick = joystick;
-        Debug.Log("GameModel starting" + Joystick);
     }
 
     public void SetSpawnFieldBorders(Bounds fieldBounds)
@@ -44,7 +43,6 @@ public class GameModel
 
     private void SpawnEnemies(float minX, float maxX, float minZ, float maxZ)
     {
-        Debug.Log("SPAWN");
         for (int i = 0; i < _countOfEnemiesGround; i++)
         {
             EnemyController enemyGround = _objectsPool.GetPooledObject(EnemyType.Ground);
@@ -56,7 +54,6 @@ public class GameModel
         }
         for (int i = 0; i < _countOfEnemiesFlying; i++)
         {
-            Debug.Log(_countOfEnemiesFlying);
             EnemyController enemyFlying = _objectsPool.GetPooledObject(EnemyType.Flying);
             enemyFlying.transform.position = new Vector3(Random.Range(maxX, minX), 0.25f, Random.Range(maxZ, minZ));
             enemyFlying.EnemyMoveable.SpawnPoint = enemyFlying.transform.position;

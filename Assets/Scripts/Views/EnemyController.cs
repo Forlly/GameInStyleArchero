@@ -16,7 +16,7 @@ public class EnemyController : UnitBase
     [SerializeField] private LayerMask _bulletsLayer;
     
     private CharacterSkillable _characterSkillable = new CharacterSkillable();
-    [SerializeField]private AttackableCharacter _enemyAttackable;
+    [SerializeField]private AttackableUnit _enemyAttackable;
     
     [SerializeField] private float _speedMove;
     [SerializeField] private Vector2 _distanceMoving;
@@ -33,11 +33,11 @@ public class EnemyController : UnitBase
 
     public void Init(GameModel gameModel)
     {
-        _immobilityTime = 2500;
+        _immobilityTime = 2000;
         _currentImmobilityTime = 0f;
         _startHealth = 20;
         _currentHealth = _startHealth;
-        _attackDelay = 1000;
+        _attackDelay = Weapon.AttackDelay;
         _currentAttackDelay = 0;
         _attackDamage = 5;
         _agent.speed = _speedMove;
