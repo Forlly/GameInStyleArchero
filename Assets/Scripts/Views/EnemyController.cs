@@ -54,8 +54,6 @@ public class EnemyController : UnitBase
     {
         if (_agent.velocity != Vector3.zero)
         {
-/*            gameObject.transform.rotation = Quaternion.LookRotation(new Vector3(0,
-                gameObject.transform.rotation.y,0));*/
             return;
         }
         

@@ -19,4 +19,4 @@ MonoBehaviour:
   Damage: 10
   LifeTime: 7
   BulletSpeed: 1
-  AttackDelay: 1500
+  AttackDelay: 1000

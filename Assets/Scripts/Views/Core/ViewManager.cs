@@ -3,12 +3,13 @@ using UnityEngine.UI;
 
 public class ViewManager : MonoBehaviour
 {
-    public Transform SpawnPositionCharacter;
-    
+    public Collider _field;
+
     [SerializeField] private Text _countOfCoinTxt;
+    [SerializeField] private TransitionBetweenLevels _transitionBetweenLevels;
+    [SerializeField] private Material _transitionBetweenLevelsMaterial;
     [SerializeField] private Button _pauseButton;
     [SerializeField] private PausePanel _pausePanel;
-    [SerializeField] private Collider _field;
     [SerializeField] private CharacterController prefab;
     [SerializeField] private GameObject _gameOverPanel;
     
@@ -21,11 +22,15 @@ public class ViewManager : MonoBehaviour
     public void Init(GameModel gameModel)
     {
         _gameModel = gameModel;
+        _transitionBetweenLevels.SetTransitionState(false);
         _gameModel.SpawnCharacterEvent += SpawnCharacter;
         _gameModel.DieUnitEvent += IncreaseCountOfCoin;
+        _gameModel.AllEnemiesKilled += OpenTransitionBetweenLevels;
         _countOfCoin = 0;
+        _transitionBetweenLevelsMaterial.color = new Color(1f, 0.36f, 0.32f);
 
         _pauseButton.onClick.AddListener(PauseGame);
+        _pausePanel.SetGameModel(gameModel);
         SetOrthographicSizeCamera();
         
         Debug.Log("ViewManager starting");
@@ -34,8 +39,15 @@ public class ViewManager : MonoBehaviour
     private void PauseGame()
     {
         Time.timeScale = 0;
+        _gameModel.EndModel();
         _pauseButton.gameObject.SetActive(false);
         _pausePanel.gameObject.SetActive(true);
+    }
+
+    private void OpenTransitionBetweenLevels()
+    {
+     _transitionBetweenLevelsMaterial.color = new Color(0.3f, 1f, 0.51f);
+     _transitionBetweenLevels.SetTransitionState(true);
     }
 
     private void SetOrthographicSizeCamera()

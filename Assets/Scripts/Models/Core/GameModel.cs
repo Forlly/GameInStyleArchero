@@ -15,8 +15,10 @@ public class GameModel
     public Action<List<EnemyController>, int> StartAttackUnitEvent;
     public Action SpawnCharacterEvent;
     public Action DieUnitEvent;
+    public Action AllEnemiesKilled;
     
     private bool _onSimulation;
+    private bool _allEnemiesIsKilled;
     private int _countOfEnemiesGround;
     private int _countOfEnemiesFlying;
     private ObjectsPool _objectsPool;
@@ -28,6 +30,7 @@ public class GameModel
         _countOfEnemiesGround = 1;
         _countOfEnemiesFlying = 1;
         _objectsPool = objectsPool;
+        _allEnemiesIsKilled = false;
 
         Joystick = joystick;
         Debug.Log("GameModel starting" + Joystick);
@@ -75,6 +78,11 @@ public class GameModel
        
         while (_onSimulation)
         {
+            if (_enemies.Count == 0 && _allEnemiesIsKilled == false)
+            {
+                _allEnemiesIsKilled = true;
+                AllEnemiesKilled?.Invoke();
+            }
             if (Joystick.Horizontal != 0)
             {
                 CharacterMoveEvent?.Invoke(Joystick.Direction);

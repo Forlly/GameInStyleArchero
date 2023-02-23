@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,6 +8,7 @@ public class PausePanel : MonoBehaviour
    [SerializeField] private Button _continueGameButton;
    [SerializeField] private Button _restartGameButton;
    [SerializeField] private Button _exitGameButton;
+   private GameModel _gameModel;
 
    private void Awake()
    {
@@ -17,10 +17,16 @@ public class PausePanel : MonoBehaviour
       _exitGameButton.onClick.AddListener(ExitGame);
    }
 
+   public void SetGameModel(GameModel gameModel)
+   {
+      _gameModel = gameModel;
+   }
+
    private void ContinueGame()
    {
-      _pauseGameButton.gameObject.SetActive(true);
       Time.timeScale = 1;
+      _gameModel.StartSimulation();
+      _pauseGameButton.gameObject.SetActive(true);
       gameObject.SetActive(false);
    }
 

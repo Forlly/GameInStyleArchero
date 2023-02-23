@@ -371,7 +371,7 @@ MonoBehaviour:
   _bulletsLayer:
     serializedVersion: 2
     m_Bits: 512
-  Weapon: {fileID: 11400000, guid: a0d5d841f0838db4ea41fe44f5272301, type: 2}
+  Weapon: {fileID: 11400000, guid: ff2b576bd228340488e0ca0b121d32a4, type: 2}
   _spawnBulletPos: {fileID: 3190804124741367781}
   attackableCharacter: {fileID: 4598859309680947634}
 --- !u!114 &4598859309680947634

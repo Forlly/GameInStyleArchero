@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -45,7 +44,6 @@ public class CharacterController : CharacterBase
     {
         _rigidbody.velocity = new Vector3(Move(direction).x, _rigidbody.velocity.y, Move(direction).y);
         _rigidbody.rotation = Quaternion.LookRotation(_rigidbody.velocity);
-        _currentAttackDelay = Weapon.AttackDelay;
     }
     public override Vector3 Move(Vector3 direction)
     {
