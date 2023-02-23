@@ -25,7 +25,7 @@ public class GameModel
     public void Init(Joystick joystick, ObjectsPool objectsPool)
     {
         TickTime = 10;
-        _countOfEnemiesGround = 3;
+        _countOfEnemiesGround = 1;
         _countOfEnemiesFlying = 1;
         _objectsPool = objectsPool;
 
@@ -44,7 +44,6 @@ public class GameModel
         Debug.Log("SPAWN");
         for (int i = 0; i < _countOfEnemiesGround; i++)
         {
-            Debug.Log(_countOfEnemiesGround);
             EnemyController enemyGround = _objectsPool.GetPooledObject(EnemyType.Ground);
             enemyGround.transform.position = new Vector3(Random.Range(maxX, minX), 0.25f, Random.Range(maxZ, minZ));
             enemyGround.EnemyMoveable.SpawnPoint = enemyGround.transform.position;

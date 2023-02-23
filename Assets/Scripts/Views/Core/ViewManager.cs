@@ -61,7 +61,7 @@ public class ViewManager : MonoBehaviour
     private void SpawnCharacter()
     {
         CharacterController character = Instantiate(prefab, 
-            new Vector3((_field.bounds.min.x + _field.bounds.max.x) / 2, 1f, _field.bounds.min.z + 0.5f), 
+            new Vector3((_field.bounds.min.x + _field.bounds.max.x) / 2, 2f, _field.bounds.min.z + 0.5f), 
             Quaternion.identity);
         character.Init(_gameModel);
         _character = character;

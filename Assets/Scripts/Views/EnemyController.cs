@@ -8,9 +8,12 @@ public class EnemyController : UnitBase
     public EnemyMoveable EnemyMoveable = new EnemyMoveable();
     public Action<EnemyController> DieUnitEvent;
     public EnemyType EnemyType;
+    public Weapon Weapon;
     [SerializeField] private NavMeshAgent _agent;
+    [SerializeField] private Transform _spawnBulletPos;
     [SerializeField] private Image _totalHealthImg;
     [SerializeField] private Image _currentHealthImg;
+    [SerializeField] private LayerMask _bulletsLayer;
     
     private CharacterSkillable _characterSkillable = new CharacterSkillable();
     [SerializeField]private AttackableCharacter _enemyAttackable;
@@ -40,6 +43,7 @@ public class EnemyController : UnitBase
         _agent.speed = _speedMove;
         
         EnemyMoveable.SetParameters(_speedMove, _distanceMoving, transform.position);
+        _enemyAttackable.SetParameters(Weapon, _spawnBulletPos,_bulletsLayer);
         EnemyMoveable.SetExtremePoints();
         _gameModel = gameModel;
         _gameModel.EnemyMoveEvent += TryMove;
@@ -50,14 +54,14 @@ public class EnemyController : UnitBase
     {
         if (_agent.velocity != Vector3.zero)
         {
-            gameObject.transform.rotation = Quaternion.LookRotation(_agent.velocity);
+/*            gameObject.transform.rotation = Quaternion.LookRotation(new Vector3(0,
+                gameObject.transform.rotation.y,0));*/
             return;
         }
         
         _currentImmobilityTime += msec;
         if (!(_currentImmobilityTime >= _immobilityTime)) return;
         
-       
         _currentImmobilityTime -= _immobilityTime;
         _agent.SetDestination(Move(CharacterController.Instance.transform.position));
     }
@@ -107,8 +111,6 @@ public class EnemyController : UnitBase
         _agent.velocity = Vector3.zero;
         _agent.isStopped = true;
         _gameModel.EnemyMoveEvent -= TryMove;
-        
-        _enemyAttackable.StopAttack();
         _gameModel.EnemyAttackEvent -= TryAttack;
     }
     public void ReceiveDamage(int damage)
@@ -117,12 +119,7 @@ public class EnemyController : UnitBase
         UpdateHealthView(_currentHealth, _startHealth);
 
         if (_currentHealth <= 0)
-        {
-            Debug.Log("DIE");
             DieUnitEvent?.Invoke(this);
-            
-        }
-        
     }
     
     public void UpdateHealthView(int currentHP, int totalHP)

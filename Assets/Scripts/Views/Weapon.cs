@@ -8,7 +8,8 @@ public class Weapon : ScriptableObject
     public Sprite Sprite;
     public WeaponType Type;
     public int Damage;
-    public int SpeedAttack;
+    public float LifeTime;
+    public float BulletSpeed;
     public int AttackDelay;
 }
 

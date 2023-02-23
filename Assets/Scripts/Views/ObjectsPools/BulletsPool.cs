@@ -4,9 +4,9 @@ using UnityEngine;
 public class BulletsPool : MonoBehaviour
 {
     public static BulletsPool Instance;
-    private List<GameObject> poolObjects = new List<GameObject>();
+    private List<Bullet> poolObjects = new List<Bullet>();
     [SerializeField] private int amountPool = 128;
-    [SerializeField] private GameObject bullet;
+    [SerializeField] private Bullet bullet;
     
     private bool isFull = false;
 
@@ -19,20 +19,23 @@ public class BulletsPool : MonoBehaviour
         
         for (int i = 0; i < amountPool; i++)
         {
-            GameObject tmpObj = Instantiate(bullet);
-            tmpObj.SetActive(false);
+            Bullet tmpObj = Instantiate(bullet);
+            tmpObj.gameObject.SetActive(false);
+            tmpObj.InPull = true;
+            tmpObj.transform.position = new Vector3(-1000, -1000, -1000);
             poolObjects.Add(tmpObj);
         }
     }
 
 
-    public GameObject GetPooledObject()
+    public Bullet GetPooledObject()
     {
         for (int i = 0; i < amountPool; i++)
         {
-            if (!poolObjects[i].activeInHierarchy)
+            if (!poolObjects[i].gameObject.activeInHierarchy)
             {
-                poolObjects[i].SetActive(true);
+                poolObjects[i].InPull = false;
+                poolObjects[i].gameObject.SetActive(true);
                 return poolObjects[i];
             }
 
@@ -46,22 +49,26 @@ public class BulletsPool : MonoBehaviour
         return null;
     }
     
-    public  void TurnOfObject( GameObject _platform)
+    public  void TurnOfObject(Bullet _platform)
     {
         for (int i = 0; i < amountPool; i++)
         {
             if (_platform == poolObjects[i])
             {
-                poolObjects[i].SetActive(false);
+                poolObjects[i].InPull = true;
+                poolObjects[i].gameObject.SetActive(false);
+                poolObjects[i].transform.position = new Vector3(-1000, -1000, -1000);
             }
             
         }
     }
 
-    private GameObject CreateNewObject()
+    private Bullet CreateNewObject()
     {
-        GameObject tmpObj = Instantiate(bullet);
-        tmpObj.SetActive(true);
+        Bullet tmpObj = Instantiate(bullet);
+        tmpObj.gameObject.SetActive(true);
+        tmpObj.InPull = false;
+        tmpObj.transform.position = new Vector3(-1000, -1000, -1000);
         poolObjects.Add(tmpObj);
         return tmpObj;
     }

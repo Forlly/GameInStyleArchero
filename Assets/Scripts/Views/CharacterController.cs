@@ -13,6 +13,7 @@ public class CharacterController : CharacterBase
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private Image _totalHealthImg;
     [SerializeField] private Image _currentHealthImg;
+    [SerializeField] private LayerMask _bulletsLayer;
 
     public Weapon Weapon;
     [SerializeField] private Transform _spawnBulletPos;
@@ -20,7 +21,6 @@ public class CharacterController : CharacterBase
     private CharacterMoveable _characterMoveable = new CharacterMoveable();
     private CharacterSkillable _characterSkillable = new CharacterSkillable();
     [SerializeField] private AttackableCharacter attackableCharacter;
-    private int _attackDelay;
     private int _currentAttackDelay;
     private int _startHealth;
     private int _currentHealth;
@@ -35,7 +35,7 @@ public class CharacterController : CharacterBase
         _startHealth = 100;
         _currentHealth = _startHealth;
 
-        attackableCharacter.SetParameters(Weapon.Damage, Weapon, _spawnBulletPos);
+        attackableCharacter.SetParameters(Weapon, _spawnBulletPos, _bulletsLayer);
 
         gameModel.CharacterMoveEvent += TryMove;
         gameModel.StartAttackUnitEvent += TryAttack;
@@ -45,6 +45,7 @@ public class CharacterController : CharacterBase
     {
         _rigidbody.velocity = new Vector3(Move(direction).x, _rigidbody.velocity.y, Move(direction).y);
         _rigidbody.rotation = Quaternion.LookRotation(_rigidbody.velocity);
+        _currentAttackDelay = Weapon.AttackDelay;
     }
     public override Vector3 Move(Vector3 direction)
     {
@@ -79,9 +80,9 @@ public class CharacterController : CharacterBase
                 }
             }
             
-            _rigidbody.transform.LookAt(new Vector3(targetEnemy.transform.position.x,  _rigidbody.transform.position.y,targetEnemy.transform.position.z));
+            _rigidbody.transform.LookAt(new Vector3(targetEnemy.transform.position.x, _rigidbody.transform.position.y,
+                targetEnemy.transform.position.z));
             attackableCharacter.Attack(targetEnemy.transform.position);
-
         }
     }
 

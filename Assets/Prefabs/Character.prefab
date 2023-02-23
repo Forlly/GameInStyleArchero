@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 423208837}
   - component: {fileID: 423208840}
   - component: {fileID: 423208839}
-  - component: {fileID: 423208838}
   m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
@@ -84,19 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &423208838
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 423208836}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1161758737856815556
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +107,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1161758737856815556}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.195, z: 0.338}
+  m_LocalPosition: {x: 0, y: 0.4, z: 0.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -242,7 +228,6 @@ GameObject:
   - component: {fileID: 5812399456453089807}
   - component: {fileID: 5812399456453089806}
   - component: {fileID: 5812399456453089805}
-  - component: {fileID: 1920272289}
   m_Layer: 6
   m_Name: Character
   m_TagString: Player
@@ -258,7 +243,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5812399456453089803}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.414, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.414, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -330,26 +315,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1920272289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5812399456453089803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbd32556ad897fa408b2632d1f31fdb9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _moveSpeed: 4
-  _rigidbody: {fileID: 0}
-  _totalHealthImg: {fileID: 0}
-  _currentHealthImg: {fileID: 0}
-  Weapon: {fileID: 0}
-  _bullet: {fileID: 0}
-  _spawnBulletPos: {fileID: 0}
-  attackableCharacter: {fileID: 0}
 --- !u!1 &5812399456657416886
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,7 +342,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5812399456657416886}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.51, y: 1.08, z: -13.85}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -403,8 +368,10 @@ MonoBehaviour:
   _rigidbody: {fileID: 3337368950988663719}
   _totalHealthImg: {fileID: 6372748741623449084}
   _currentHealthImg: {fileID: 3990957463075489021}
+  _bulletsLayer:
+    serializedVersion: 2
+    m_Bits: 512
   Weapon: {fileID: 11400000, guid: a0d5d841f0838db4ea41fe44f5272301, type: 2}
-  _bullet: {fileID: 2686928704386747324, guid: f88c44816322aea4b890c7239b8e7c53, type: 3}
   _spawnBulletPos: {fileID: 3190804124741367781}
   attackableCharacter: {fileID: 4598859309680947634}
 --- !u!114 &4598859309680947634
@@ -419,11 +386,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c70de5888ec84140aeb09c66a25a9a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackDamage: 0
   Weapon: {fileID: 0}
-  Bullet: {fileID: 0}
   SpawnBulletPos: {fileID: 0}
-  LifeTime: 0
 --- !u!54 &3337368950988663719
 Rigidbody:
   m_ObjectHideFlags: 0

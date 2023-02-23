@@ -17,5 +17,6 @@ MonoBehaviour:
   Sprite: {fileID: 0}
   Type: 1
   Damage: 10
-  SpeedAttack: 5
+  LifeTime: 7
+  BulletSpeed: 1
   AttackDelay: 1500
