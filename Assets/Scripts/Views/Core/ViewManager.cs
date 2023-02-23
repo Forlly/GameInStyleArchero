@@ -8,7 +8,9 @@ public class ViewManager : MonoBehaviour
 
     [SerializeField] private Text _countOfCoinTxt;
     [SerializeField] private Collider _field;
-    [SerializeField] private CharacterController _characterPrefab;
+    [SerializeField] private CharacterController prefab;
+    [SerializeField] private GameObject _gameOverPanel;
+    
     private CharacterController _character;
     private int _countOfCoin;
     
@@ -49,17 +51,24 @@ public class ViewManager : MonoBehaviour
 
     private void SpawnCharacter()
     {
-        CharacterController character = Instantiate(_characterPrefab, 
+        CharacterController character = Instantiate(prefab, 
             new Vector3((_field.bounds.min.x + _field.bounds.max.x) / 2, 1f, _field.bounds.min.z + 0.5f), 
             Quaternion.identity);
         character.Init(_gameModel);
         _character = character;
+        _character.DieCharacterEvent += ShowGameOverPanel;
     }
 
     private void IncreaseCountOfCoin()
     {
         _countOfCoin += 10;
         _countOfCoinTxt.text = _countOfCoin.ToString();
+    }
+
+    private void ShowGameOverPanel()
+    {
+        _gameOverPanel.SetActive(true);
+        _gameModel.EndModel();
     }
         
 }

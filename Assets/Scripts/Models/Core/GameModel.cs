@@ -11,6 +11,7 @@ public class GameModel
     
     public Action<Vector3> CharacterMoveEvent;
     public Action<int> EnemyMoveEvent;
+    public Action<int> EnemyAttackEvent;
     public Action<List<EnemyController>, int> StartAttackUnitEvent;
     public Action SpawnCharacterEvent;
     public Action DieUnitEvent;
@@ -85,6 +86,7 @@ public class GameModel
             }
             
             EnemyMoveEvent?.Invoke(msec);
+            EnemyAttackEvent?.Invoke(msec);
             
             await Task.Delay(msec);
         }

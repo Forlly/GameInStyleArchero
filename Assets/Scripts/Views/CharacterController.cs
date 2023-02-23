@@ -1,29 +1,29 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CharacterController : CharacterBase
 {
     public static CharacterController Instance;
+    public Action DieCharacterEvent;
     
     [SerializeField] private float _moveSpeed;
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private Image _totalHealthImg;
     [SerializeField] private Image _currentHealthImg;
 
-    public Weapon _weapon;
-    [SerializeField] private GameObject _bullet;
+    public Weapon Weapon;
     [SerializeField] private Transform _spawnBulletPos;
     
     private CharacterMoveable _characterMoveable = new CharacterMoveable();
     private CharacterSkillable _characterSkillable = new CharacterSkillable();
-    [SerializeField] private CharacterAttackable _characterAttackable;
+    [SerializeField] private AttackableCharacter attackableCharacter;
     private int _attackDelay;
-    private int _currentAttackDelay = 0;
+    private int _currentAttackDelay;
     private int _startHealth;
     private int _currentHealth;
-    
     
     public void Init(GameModel gameModel)
     {
@@ -31,12 +31,11 @@ public class CharacterController : CharacterBase
             Instance = this;
         
         _characterMoveable.MoveSpeed = _moveSpeed;
-        _attackDelay = 1000;
         _currentAttackDelay = 0;
-        _startHealth = 10;
-        _currentHealth = 10;
-        
-        _characterAttackable.SetParameters(_weapon.Damage, _weapon, _bullet, _spawnBulletPos);
+        _startHealth = 100;
+        _currentHealth = _startHealth;
+
+        attackableCharacter.SetParameters(Weapon.Damage, Weapon, _spawnBulletPos);
 
         gameModel.CharacterMoveEvent += TryMove;
         gameModel.StartAttackUnitEvent += TryAttack;
@@ -64,9 +63,9 @@ public class CharacterController : CharacterBase
         if (enemies.Count <= 0) return;
         
         _currentAttackDelay += msec;
-        if (_currentAttackDelay >= _attackDelay)
+        if (_currentAttackDelay >= Weapon.AttackDelay)
         {
-            _currentAttackDelay -= _attackDelay;
+            _currentAttackDelay -= Weapon.AttackDelay;
 
             float minDistance = 1000f;
 
@@ -81,17 +80,27 @@ public class CharacterController : CharacterBase
             }
             
             _rigidbody.transform.LookAt(new Vector3(targetEnemy.transform.position.x,  _rigidbody.transform.position.y,targetEnemy.transform.position.z));
-            _characterAttackable.Attack(targetEnemy);
+            attackableCharacter.Attack(targetEnemy.transform.position);
 
         }
     }
 
-    public override void Attack(EnemyController targetEnemy)
+    public override void Attack(Vector3 targetEnemy)
     {
-        _characterAttackable.Attack(targetEnemy);
+        attackableCharacter.Attack(targetEnemy);
     }
+    public void ReceiveDamage(int damage)
+    { ;
+        _currentHealth -= damage;
+        UpdateHealthView(_currentHealth, _startHealth);
 
-
+        if (_currentHealth <= 0)
+        {
+            Debug.Log("DIE");
+            DieCharacterEvent?.Invoke();
+        }
+    }
+    
     public override void UseSkill()
     {
         _characterSkillable.UseSkill();

@@ -1,25 +1,22 @@
 using System.Collections;
 using UnityEngine;
 
-public class CharacterAttackable : AttackableCharacterBase
+public class AttackableCharacter : AttackableBase
 {
     
     public int AttackDamage;
     public Weapon Weapon;
-    public GameObject Bullet;
     public Transform SpawnBulletPos;
     public float LifeTime;
-    public override void Attack(EnemyController targetEnemy)
+    public override void Attack(Vector3 targetEnemy)
     {
-        Fire(targetEnemy.transform.position);
-        Debug.Log("Attack");
+        Fire(targetEnemy);
     }
 
-    public void SetParameters(int damage, Weapon weapon, GameObject bullet, Transform spawnBulletPos)
+    public void SetParameters(int damage, Weapon weapon,  Transform spawnBulletPos)
     {
         AttackDamage = damage;
         Weapon = weapon;
-        Bullet = bullet;
         SpawnBulletPos = spawnBulletPos;
     }
     public void Fire(Vector3 targetPosition)
@@ -37,6 +34,7 @@ public class CharacterAttackable : AttackableCharacterBase
             _bullet.transform.position = startPoint;
         }
 
+        _bullet.GetComponent<Bullet>().Damage = Weapon.Damage;
         float wspeed = (Weapon.SpeedAttack * Time.deltaTime) /
                        Vector3.Distance(startPoint, targetPosition);
 
@@ -59,7 +57,6 @@ public class CharacterAttackable : AttackableCharacterBase
 
             if (currentTime >= LifeTime || progressFly > 1)
             {
-                //CharacterController.Instance.MakeDamageEvent?.Invoke(unit);
                 BulletsPool.Instance.TurnOfObject(_bullet);
                 yield break;
             }

@@ -7,6 +7,13 @@ public class EnemyMoveable : MoveableBase
 
     private float _minX, _minZ, _maxX, _maxZ;
 
+    public void SetParameters(float movingSpeed,Vector2 distance, Vector3 spawnPoint)
+    {
+        MoveSpeed = movingSpeed;
+        Distance = distance;
+        SpawnPoint = spawnPoint;
+    }
+
     public void SetExtremePoints()
     {
         _minX = SpawnPoint.x - Distance.x;

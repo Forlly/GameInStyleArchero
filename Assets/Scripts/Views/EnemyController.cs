@@ -13,7 +13,7 @@ public class EnemyController : UnitBase
     [SerializeField] private Image _currentHealthImg;
     
     private CharacterSkillable _characterSkillable = new CharacterSkillable();
-    private EnemyAttackable _enemyAttackable = new EnemyAttackable();
+    [SerializeField]private AttackableCharacter _enemyAttackable;
     
     [SerializeField] private float _speedMove;
     [SerializeField] private Vector2 _distanceMoving;
@@ -23,6 +23,7 @@ public class EnemyController : UnitBase
     private int _startHealth;
     private int _currentHealth;
     private int _attackDelay;
+    private int _currentAttackDelay;
     private int _attackDamage;
 
     private GameModel _gameModel;
@@ -32,23 +33,24 @@ public class EnemyController : UnitBase
         _immobilityTime = 3500f;
         _currentImmobilityTime = 3500f;
         _startHealth = 20;
-        _currentHealth = 20;
+        _currentHealth = _startHealth;
         _attackDelay = 1000;
+        _currentAttackDelay = 0;
         _attackDamage = 5;
         _agent.speed = _speedMove;
         
-        EnemyMoveable.MoveSpeed = _speedMove;
-        EnemyMoveable.SpawnPoint = transform.position;
-        EnemyMoveable.Distance = _distanceMoving;
+        EnemyMoveable.SetParameters(_speedMove, _distanceMoving, transform.position);
         EnemyMoveable.SetExtremePoints();
         _gameModel = gameModel;
         _gameModel.EnemyMoveEvent += TryMove;
+        _gameModel.EnemyAttackEvent += TryAttack;
     }
 
     public void TryMove(int msec)
     {
+        if (_agent.velocity != Vector3.zero) return;
+        
         _currentImmobilityTime += msec;
-
         if (!(_currentImmobilityTime >= _immobilityTime)) return;
         
        
@@ -59,10 +61,26 @@ public class EnemyController : UnitBase
     
     public override Vector3 Move(Vector3 direction)
     {
+        Debug.Log("MOVE ENEMY");
       return EnemyMoveable.Move(direction);
     }
+
+    public void TryAttack(int msec)
+    {
+        if (_agent.velocity == Vector3.zero)
+        {
+            _currentAttackDelay += msec;
+            if (_currentAttackDelay >= _attackDelay)
+            {
+                _currentAttackDelay -= _attackDelay;
+                Debug.Log("ATTACK ENEMY" + gameObject.name);
+                gameObject.transform.LookAt(CharacterController.Instance.transform);
+                Attack(CharacterController.Instance.transform.position);
+            }
+        }
+    }
     
-    public override void Attack(CharacterController target)
+    public override void Attack(Vector3 target)
     {
         _enemyAttackable.Attack(target);
     }
@@ -72,11 +90,23 @@ public class EnemyController : UnitBase
         _characterSkillable.UseSkill();
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!collision.gameObject.CompareTag("Player")) return;
+        
+        _agent.velocity = Vector3.zero;
+        _agent.isStopped = true;
+        Debug.Log("Attack PLayer");
+        collision.gameObject.GetComponentInParent<CharacterController>()
+            .ReceiveDamage(CharacterController.Instance.Weapon.Damage);
+    }
+
     public void StopMoving()
     {
         _agent.velocity = Vector3.zero;
-        _agent.Stop();
+        _agent.isStopped = true;
         _gameModel.EnemyMoveEvent -= TryMove;
+        _gameModel.EnemyAttackEvent -= TryAttack;
     }
     public void ReceiveDamage(int damage)
     {
